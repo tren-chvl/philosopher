@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = pipex
+NAME = philosopher
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 SRCS =	ft_philo.c \

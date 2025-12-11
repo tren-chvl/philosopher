@@ -17,6 +17,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <pthread.h>
+#include <sys/time.h>
 
 typedef struct s_per
 {
@@ -45,6 +46,11 @@ typedef struct	s_phi
 	t_per	*philo;
 }	t_phi;
 
-int	ft_atoi(const char *str);
-
+int		ft_atoi(const char *str);
+long	now_ms(void);
+void	log_state(t_phi *ph, int id, char *msg);
+void    *ft_routine(void *arg);
+void    *ft_monitor(void *arg);
+int		init_philo(t_phi *philo);
+int		init_fork(t_phi *philo);
 #endif

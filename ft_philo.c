@@ -35,12 +35,35 @@ int parse_philo(int argc, char **argv, t_phi *philo)
 	return (0);
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char **argv)
 {
-	t_phi *philo;
+	t_phi   philo;
+	int     i;
 
-	if (parse_philo(argc, argv, philo))
+	if (parse_philo(argc, argv, &philo))
 		return (1);
-	printf("philosopher %d\nnb eat = %d\nnb to sleep\nnb to die\nnb dinner %d\n",philo->n,philo->t_eat,philo->t_sleep,philo->t_die,philo->nb_din);
+	if (init_fork(&philo))
+		return (1);
+	if (init_philo(&philo))
+		return (1);
+	philo.start = now_ms();
+	i = 0;
+	while (i < philo.n)
+	{
+		if (pthread_create(&philo.philo[i].thread, NULL,
+				ft_routine, &philo.philo[i]) != 0)
+			return (1);
+		i++;
+	}
+	if (pthread_create(&philo.monitor, NULL, ft_monitor, &philo))
+		return (1);
+	pthread_join(philo.monitor, NULL);
+	i = 0;
+	while (i < philo.n)
+	{
+		pthread_join(philo.philo[i].thread, NULL);
+		i++;
+	}
 	return (0);
 }
+
