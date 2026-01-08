@@ -14,7 +14,12 @@ NAME = philosopher
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 SRCS =	ft_philo.c \
-		ft_utils.c
+		ft_utils.c \
+		ft_routine.c \
+		ft_routine2.c \
+		ft_time.c \
+		init.c \
+		ft_monitor.c 
 
 OBJS = $(SRCS:.c=.o)
 

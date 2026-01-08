@@ -12,7 +12,6 @@
 
 #include "philo.h"
 
-
 int	init_philo(t_phi *philo)
 {
 	int	i;
@@ -21,14 +20,15 @@ int	init_philo(t_phi *philo)
 	philo->philo = malloc(sizeof(t_per) * philo->n);
 	if (!philo->philo)
 		return (1);
+	philo->stop = 0;
 	while (i < philo->n)
 	{
 		philo->philo[i].id = i + 1;
-        philo->philo[i].left = i;
-        philo->philo[i].right = (i + 1) % philo->n;
-        philo->philo[i].meal = 0;
-        philo->philo[i].last_meal = 0;
-        philo->philo[i].phi = philo;
+		philo->philo[i].left = i;
+		philo->philo[i].right = (i + 1) % philo->n;
+		philo->philo[i].meal = 0;
+		philo->philo[i].last_meal = philo->start;
+		philo->philo[i].phi = philo;
 		i++;
 	}
 	return (0);
@@ -44,14 +44,13 @@ int	init_fork(t_phi *philo)
 		return (1);
 	while (i < philo->n)
 	{
-		if (pthread_mutex_init(&philo->philo[i], NULL) != 0);
+		if (pthread_mutex_init(&philo->forks[i], NULL))
 			return (1);
 		i++;
 	}
-	if (pthread_mutex_init(&philo->print, NULL) != 0)
+	if (pthread_mutex_init(&philo->print, NULL))
 		return (1);
-	if (pthread_mutex_init(&philo->state, NULL) != 0)
+	if (pthread_mutex_init(&philo->state, NULL))
 		return (1);
 	return (0);
 }
-

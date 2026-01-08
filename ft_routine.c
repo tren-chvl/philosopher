@@ -1,50 +1,55 @@
 #include "philo.h"
 
-void    *ft_routine(void *arg)
+void	rt_one_philo(t_per *per, t_phi *phi)
 {
-	t_per   *per;
-	t_phi   *phi;
+	pthread_mutex_lock(&phi->forks[per->left]);
+	log_state(phi, per->id, "has taken a fork");
+	usleep(phi->t_die * 1000);
+	pthread_mutex_unlock(&phi->forks[per->left]);
+}
+
+void	rt_eat(t_per *per, t_phi *phi)
+{
+	pthread_mutex_lock(&phi->state);
+	per->last_meal = now_ms();
+	per->meal++;
+	pthread_mutex_unlock(&phi->state);
+	log_state(phi, per->id, "is eating");
+	usleep(phi->t_eat * 1000);
+	pthread_mutex_unlock(&phi->forks[per->left]);
+	pthread_mutex_unlock(&phi->forks[per->right]);
+}
+
+void	rt_sleep_think(t_per *per, t_phi *phi)
+{
+	log_state(phi, per->id, "is sleeping");
+	usleep(phi->t_sleep * 1000);
+	log_state(phi, per->id, "is thinking");
+}
+
+void	*ft_routine(void *arg)
+{
+	t_per	*per;
+	t_phi	*phi;
 
 	per = (t_per *)arg;
 	phi = per->phi;
-	while (1)
+	if (phi->n == 1)
 	{
-		pthread_mutex_lock(&phi->forks[per->left]);
-		log_state(phi, per->id, "take fork");
-		pthread_mutex_lock(&phi->forks[per->right]);
-		log_state(phi, per->id, "take fork");
-		log_state(phi , per->id, "miam mian :)");
-		per->last_meal = now_ms();
-		usleep(phi->t_eat * 1000);
-		pthread_mutex_unlock(&phi->forks[per->left]);
-		pthread_mutex_unlock(&phi->forks[per->right]);
-		log_state(phi, per->id, "il roupiiie");
-		usleep(phi->t_sleep * 1000);
-		log_state(phi, per->id, "hi cook !");
+		rt_one_philo(per, phi);
+		return (NULL);
 	}
-	return (NULL);
-	
-}
-
-void    *ft_monitor(void *arg)
-{
-	t_phi   *ph;
-	int     i;
-
-	ph = (t_phi *)arg;
-	while (1)
+	while (!get_stop(phi))
 	{
-		i = 0;
-		while (i < ph->n)
+		take_forks(per, phi);
+		if (get_stop(phi))
 		{
-			if (now_ms() - ph->philo[i].last_meal > ph->t_die)
-			{
-				log_state(ph, ph->philo[i].id, "died");
-				return (NULL);
-			}
-			i++;
+			pthread_mutex_unlock(&phi->forks[per->left]);
+			pthread_mutex_unlock(&phi->forks[per->right]);
+			break ;
 		}
-		usleep(1000);
+		rt_eat(per, phi);
+		rt_sleep_think(per, phi);
 	}
 	return (NULL);
 }

@@ -15,6 +15,11 @@ void	log_state(t_phi *ph, int id, char *msg)
 	long	timestamp;
 
 	pthread_mutex_lock(&ph->print);
+	if (get_stop(ph) && ft_strcmp(msg, "died"))
+	{
+		pthread_mutex_unlock(&ph->print);
+		return ;
+	}
 	timestamp = now_ms() - ph->start;
 	printf("%ld %d %s\n", timestamp, id, msg);
 	pthread_mutex_unlock(&ph->print);
