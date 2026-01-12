@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_routine2.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: marcheva <marcheva@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/12 10:57:24 by marcheva          #+#    #+#             */
+/*   Updated: 2026/01/12 14:18:58 by marcheva         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 int	get_stop(t_phi *ph)
@@ -33,4 +45,7 @@ void	take_forks(t_per *per, t_phi *phi)
 		pthread_mutex_lock(&phi->forks[per->right]);
 		log_state(phi, per->id, "has taken a fork");
 	}
+	pthread_mutex_lock(&phi->state);
+	per->last_meal = now_ms();
+	pthread_mutex_unlock(&phi->state);
 }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_monitor.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: marcheva <marcheva@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/12 10:57:15 by marcheva          #+#    #+#             */
+/*   Updated: 2026/01/12 14:09:58 by marcheva         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 int	check_death(t_phi *ph)
@@ -55,7 +67,7 @@ void	*ft_monitor(void *arg)
 			return (NULL);
 		if (check_all_ate(ph))
 			return (NULL);
-		usleep(1000);
+		usleep(100);
 	}
 	return (NULL);
 }

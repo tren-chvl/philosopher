@@ -6,11 +6,11 @@
 #    By: marcheva <marcheva@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/24 15:35:28 by dedavid           #+#    #+#              #
-#    Updated: 2025/12/10 15:07:22 by marcheva         ###   ########.fr        #
+#    Updated: 2026/01/12 14:36:18 by marcheva         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = philosopher
+NAME = philo
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 SRCS =	ft_philo.c \
